@@ -17,6 +17,13 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+		<mysql.version>8.0.15</mysql.version>
+
+		<flyway.url>jdbc:mysql://192.168.33.11:3306/tododb?useSSL=false</flyway.url>
+		<flyway.user>dbuser</flyway.user>
+		<flyway.password>dbpassword1</flyway.password>
+		<flyway.locations>filesystem:${project.basedir}/db/migration</flyway.locations>
+
 	</properties>
 
 	<dependencies>
@@ -48,7 +55,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
+			<version>${mysql.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -67,6 +74,19 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<!-- flyway -->
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>5.2.4</version>
+				<dependencies>
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>${mysql.version}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 			<!-- Eclipse -->
 			<plugin>
