@@ -1,0 +1,24 @@
+version: '3.3'
+services:
+  db:
+    image: mysql:5.7
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: dbpassword1
+      MYSQL_DATABASE: tododb
+    volumes:
+      - ./my.cnf:/etc/my.cnf
+      - ./mysql:/var/lib/mysql
+      - ./log:/var/log/mysql
+
+  redis:
+    image: redis:5.0-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+       - ./redis:/data

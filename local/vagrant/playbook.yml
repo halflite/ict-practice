@@ -1,0 +1,105 @@
+- hosts: all
+  remote_user: vagrant
+  become: yes
+  vars:
+    docker_ver: 18.09.1-3
+    docker_compose_ver: 1.23.2
+
+  tasks:
+    - name: Yum update all
+      yum: 
+        name: '*'
+        state: latest
+
+    - name: Remove old docker package
+      yum: 
+        name:
+          - docker
+          - docker-client
+          - docker-client-latest
+          - docker-common
+          - docker-latest
+          - docker-latest-logrotate
+          - docker-logrotate
+          - docker-engine
+        state: absent
+
+    - name: Install util package for docker
+      yum: 
+        name:
+          - yum-utils
+          - device-mapper-persistent-data
+          - lvm2
+          - gcc
+          - kernel-headers
+        state: latest
+
+    - name: Add docker repo.
+      shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+    - name: Install docker-ce
+      yum: 
+        name: docker-ce
+        state: latest
+
+    - name: Start docker/Enable service
+      service:
+        name: docker
+        state: restarted
+        enabled: yes
+
+    - name: Set OS name
+      shell: uname -s
+      register: os_name
+
+    - name: Set CPU name
+      shell: uname -m
+      register: cpu_name
+
+    - name: Set docker compose path
+      set_fact:
+        docker_compose_path: "https://github.com/docker/compose/releases/download/{{ docker_compose_ver }}/docker-compose-{{ os_name.stdout }}-{{ cpu_name.stdout }}"
+
+    - name: Download docker-compose
+      get_url: 
+        url: "{{ docker_compose_path }}"
+        dest: /usr/local/bin/docker-compose
+        force: yes
+        mode: 0755
+
+    - name: Add docker group
+      group:
+        name: docker
+        state: present
+
+    - name: Join docker group
+      user:
+        name: vagrant
+        groups: docker
+        append: yes
+
+    - name: Create MySQL data directory
+      file:
+        path: "/home/vagrant/{{ item }}"
+        state: directory
+        mode: 0755
+      with_items:
+        - mysql
+        - log
+        - redis
+      become: yes
+
+    - name: Put conf/yaml file
+      copy:
+        src: ./{{ item }}
+        dest: /home/vagrant
+        mode: 0644
+      with_items:
+        - docker-compose.yml
+        - my.cnf
+    
+    - name: docker-compose up
+      shell: /usr/local/bin/docker-compose up -d
+      args:
+        chdir: /home/vagrant
+      become: yes
