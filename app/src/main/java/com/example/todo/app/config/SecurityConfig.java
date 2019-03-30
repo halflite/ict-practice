@@ -1,30 +1,33 @@
 package com.example.todo.app.config;
 
 import org.pac4j.core.config.Config;
-import org.pac4j.springframework.annotation.AnnotationConfig;
-import org.pac4j.springframework.component.ComponentConfig;
 import org.pac4j.springframework.web.SecurityInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@Import({ ComponentConfig.class, AnnotationConfig.class })
-@ComponentScan(basePackages = "org.pac4j.springframework.web")
-public class SecurityConfig implements WebMvcConfigurer {
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private final Config config;
+    private final Config config;
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		
-	}
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/**")
+                .permitAll()
+                .anyRequest()
+                .authenticated();
+    }
 
-	@Autowired
-	public SecurityConfig(Config config) {
-		this.config = config;
-	}
+    @Autowired
+    public SecurityConfig(Config config) {
+        this.config = config;
+    }
 }

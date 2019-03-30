@@ -2,8 +2,6 @@ package com.example.todo.app.entity;
 
 import java.time.LocalDateTime;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.seasar.doma.Column;
 import org.seasar.doma.Entity;
 import org.seasar.doma.GeneratedValue;
@@ -11,7 +9,7 @@ import org.seasar.doma.GenerationType;
 import org.seasar.doma.Id;
 import org.seasar.doma.Table;
 
-import com.example.todo.app.type.ProviderType;
+import com.example.todo.app.type.AccountStatusType;
 
 /**
  * アカウント
@@ -26,21 +24,21 @@ public class Account {
     @Column(name = "id")
     Long id;
 
-    /** 外部認証プロバイダーのアカウントID */
-    @Column(name = "provider_id")
-    String providerId;
+    /** ログイン用ユーザーネーム */
+    @Column(name = "username")
+    String username;
 
-    /** 外部認証プロバイダー種別 */
-    @Column(name = "provider_type")
-    ProviderType providerType;
+    /** ハッシュ化されたパスワード */
+    @Column(name = "hashed_password")
+    String hashedPassword;
 
     /** 表示名 */
-    @Column(name = "name")
-    String name;
+    @Column(name = "display_name")
+    String displayName;
 
     /** 状態 */
     @Column(name = "status")
-    String status;
+    AccountStatusType status;
 
     /** 更新日時 */
     @Column(name = "modified")
@@ -49,6 +47,18 @@ public class Account {
     /** 登録日時 */
     @Column(name = "created")
     LocalDateTime created;
+
+    public Account() {
+    }
+
+    public Account(String username, String hashedPassword, String name, LocalDateTime now) {
+        this.username = username;
+        this.hashedPassword = hashedPassword;
+        this.displayName = name;
+        this.status = AccountStatusType.ENABLED;
+        this.modified = now;
+        this.created = now;
+    }
 
     /** 
      * Returns the id.
@@ -69,57 +79,57 @@ public class Account {
     }
 
     /** 
-     * Returns the providerId.
+     * Returns the username.
      * 
-     * @return the providerId
+     * @return the username
      */
-    public String getProviderId() {
-        return providerId;
+    public String getUsername() {
+        return username;
     }
 
     /** 
-     * Sets the providerId.
+     * Sets the username.
      * 
-     * @param providerId the providerId
+     * @param username the username
      */
-    public void setProviderId(String providerId) {
-        this.providerId = providerId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     /** 
-     * Returns the providerType.
+     * Returns the hashedPassword.
      * 
-     * @return the providerType
+     * @return the hashedPassword
      */
-    public ProviderType getProviderType() {
-        return providerType;
+    public String getHashedPassword() {
+        return hashedPassword;
     }
 
     /** 
-     * Sets the providerType.
+     * Sets the hashedPassword.
      * 
-     * @param providerType the providerType
+     * @param hashedPassword the hashedPassword
      */
-    public void setProviderType(ProviderType providerType) {
-        this.providerType = providerType;
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
     }
 
     /** 
-     * Returns the name.
+     * Returns the displayName.
      * 
-     * @return the name
+     * @return the displayName
      */
-    public String getName() {
-        return name;
+    public String getDisplayName() {
+        return displayName;
     }
 
     /** 
-     * Sets the name.
+     * Sets the displayName.
      * 
-     * @param name the name
+     * @param the displayName
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     /** 
@@ -127,7 +137,7 @@ public class Account {
      * 
      * @return the status
      */
-    public String getStatus() {
+    public AccountStatusType getStatus() {
         return status;
     }
 
@@ -136,7 +146,7 @@ public class Account {
      * 
      * @param status the status
      */
-    public void setStatus(String status) {
+    public void setStatus(AccountStatusType status) {
         this.status = status;
     }
 
@@ -175,9 +185,4 @@ public class Account {
     public void setCreated(LocalDateTime created) {
         this.created = created;
     }
-
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
 }

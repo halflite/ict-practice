@@ -1,5 +1,7 @@
 package com.example.todo.app.dao;
 
+import java.util.Optional;
+
 import org.seasar.doma.Dao;
 import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
@@ -10,7 +12,6 @@ import com.example.todo.app.annotation.AutowiredDomaConfig;
 import com.example.todo.app.entity.Account;
 
 /**
- * accountテーブルのDAO
  */
 @Dao
 @AutowiredDomaConfig
@@ -22,6 +23,13 @@ public interface AccountDao {
      */
     @Select
     Account selectById(Long id);
+
+    /**
+     * @param username
+     * @return the Account entity
+     */
+    @Select
+    Optional<Account> selectByUsername(String username);
 
     /**
      * @param entity

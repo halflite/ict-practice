@@ -10,7 +10,6 @@ import com.example.todo.app.annotation.AutowiredDomaConfig;
 import com.example.todo.app.entity.Article;
 
 /**
- * articleテーブルのDAO
  */
 @Dao
 @AutowiredDomaConfig
