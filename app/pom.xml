@@ -18,12 +18,15 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<mysql.version>8.0.15</mysql.version>
+		<doma.version>2.23.0</doma.version>
 
 		<flyway.url>jdbc:mysql://192.168.33.11:3306/tododb?useSSL=false</flyway.url>
 		<flyway.user>dbuser</flyway.user>
 		<flyway.password>dbpassword1</flyway.password>
 		<flyway.locations>filesystem:${project.basedir}/db/migration</flyway.locations>
 
+		<doma.java.destdir>src/main/java/</doma.java.destdir>
+		<doma.sql.destdir>src/main/resources/</doma.sql.destdir>
 	</properties>
 
 	<dependencies>
@@ -44,19 +47,31 @@
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-core</artifactId>
+			<groupId>org.seasar.doma.boot</groupId>
+			<artifactId>doma-spring-boot-starter</artifactId>
+			<version>1.1.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.session</groupId>
-			<artifactId>spring-session-data-redis</artifactId>
+			<groupId>org.seasar.doma</groupId>
+			<artifactId>doma</artifactId>
+			<version>2.23.0</version>
 		</dependency>
+		<!-- <dependency> <groupId>org.springframework.session</groupId> <artifactId>spring-session-data-redis</artifactId> 
+			</dependency> -->
 
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql.version}</version>
 		</dependency>
+		<!-- Doma-Gen -->
+		<dependency>
+			<groupId>org.seasar.doma</groupId>
+			<artifactId>doma-gen</artifactId>
+			<version>2.23.0</version>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
@@ -87,6 +102,71 @@
 						<version>${mysql.version}</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.seasar.doma</groupId>
+						<artifactId>doma-gen</artifactId>
+						<version>${doma.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>${mysql.version}</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>doma-gen</id>
+						<phase>generate-resources</phase>
+						<configuration>
+							<target name="gen">
+								<taskdef name="gen"
+									classname="org.seasar.doma.extension.gen.task.Gen"
+									loaderref="loader" />
+								<gen driverClassName="com.mysql.cj.jdbc.Driver"
+									url="${flyway.url}" user="${flyway.user}"
+									password="${flyway.password}" dialectname="mysql"
+									ignoredTableNamePattern="flyway_schema_history">
+									<entityConfig destDir="${doma.java.destdir}"
+										packageName="com.example.todo.app.entity" overwrite="false"
+										useListener="false" showTableName="true" showColumnName="true"
+										encoding="UTF-8" />
+									<daoConfig destdir="${doma.java.destdir}"
+										packageName="com.example.todo.app.dao" overwrite="false"
+										encoding="UTF-8" />
+									<sqlConfig overwrite="false" />
+								</gen>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Generated Sources -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-sources/annotations</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<!-- Eclipse -->
 			<plugin>

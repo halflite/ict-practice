@@ -1,6 +1,6 @@
-# Database Migration
+# Database/Source Migration
 
-* Flywayによるマイグレーションを行う
+* Flyway/Doma-Genによるマイグレーションを行う
 
 ## 初期化
 
@@ -9,3 +9,8 @@
 ## DBマイグレーション
 
 > mvn flyway:migrate
+
+## DBからEntity/Daoのマイグレーション
+
+> mvn clean antrun:run@doma-gen
+ 
