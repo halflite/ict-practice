@@ -64,12 +64,12 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql.version}</version>
 		</dependency>
-		<!-- Doma-Gen -->
+
+		<!-- Utils -->
 		<dependency>
-			<groupId>org.seasar.doma</groupId>
-			<artifactId>doma-gen</artifactId>
-			<version>2.23.0</version>
-			<scope>test</scope>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.8.1</version>
 		</dependency>
 
 		<dependency>
@@ -135,7 +135,7 @@
 									<entityConfig destDir="${doma.java.destdir}"
 										packageName="com.example.todo.app.entity" overwrite="false"
 										useListener="false" showTableName="true" showColumnName="true"
-										encoding="UTF-8" />
+										showDbComment="true" encoding="UTF-8" />
 									<daoConfig destdir="${doma.java.destdir}"
 										packageName="com.example.todo.app.dao" overwrite="false"
 										encoding="UTF-8" />
