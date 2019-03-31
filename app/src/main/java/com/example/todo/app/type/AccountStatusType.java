@@ -10,4 +10,8 @@ public enum AccountStatusType {
         return this.name().toUpperCase();
     }
 
+    /** @return ログイン可能の時 {@code true} */
+    public boolean isLoginable() {
+        return this == ENABLED;
+    }
 }

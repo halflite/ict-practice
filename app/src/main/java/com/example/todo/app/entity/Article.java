@@ -2,6 +2,8 @@ package com.example.todo.app.entity;
 
 import java.time.LocalDateTime;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.seasar.doma.Column;
 import org.seasar.doma.Entity;
 import org.seasar.doma.GeneratedValue;
@@ -170,5 +172,10 @@ public class Article {
      */
     public void setCreated(LocalDateTime created) {
         this.created = created;
+    }
+    
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this,ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

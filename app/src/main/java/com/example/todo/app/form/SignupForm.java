@@ -24,7 +24,7 @@ public class SignupForm {
     private String username;
 
     @Size(max = 32)
-    private String dispalyName;
+    private String displayName;
 
     @NotNull
     @Size(min = 4, max = 72)
@@ -54,12 +54,12 @@ public class SignupForm {
 		this.username = username;
 	}
 
-    public String getDispalyName() {
-        return dispalyName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setDispalyName(String dispalyName) {
-        this.dispalyName = dispalyName;
+    public void setDisplayName(String dispalyName) {
+        this.displayName = dispalyName;
     }
 
     public String getPassword() {
@@ -80,7 +80,7 @@ public class SignupForm {
 	
 	/** DBに保存するための名前を返します */
 	public String getSavingDisplayName() {
-	    return Optional.ofNullable(this.dispalyName)
+	    return Optional.ofNullable(this.displayName)
 	            .filter(StringUtils::isNotEmpty)
 	            .orElse(this.username);
 	}
