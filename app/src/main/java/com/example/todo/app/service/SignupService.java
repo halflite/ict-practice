@@ -3,8 +3,8 @@ package com.example.todo.app.service;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.pac4j.core.credentials.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.todo.app.dao.AccountDao;

@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.pac4j.core.context.Pac4jConstants;
+import org.pac4j.core.profile.CommonProfile;
 import org.seasar.doma.Column;
 import org.seasar.doma.Entity;
 import org.seasar.doma.GeneratedValue;
@@ -62,6 +64,13 @@ public class Account {
         this.created = now;
     }
 
+    public CommonProfile toProfile() {
+        final CommonProfile profile = new CommonProfile();
+        profile.setId(this.id.toString());
+        profile.addAttribute(Pac4jConstants.USERNAME, this.displayName);
+        return profile;
+    }
+    
     /** 
      * Returns the id.
      * 
