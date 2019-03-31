@@ -1,5 +1,6 @@
 package com.example.todo.app.form;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 import javax.validation.constraints.AssertTrue;
@@ -17,7 +18,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author shingo
  *
  */
-public class SignupForm {
+public class SignupForm implements Serializable {
+    
+    private static final long serialVersionUID = -7907014712792008329L;
+    
     @NotNull
     @Size(min = 4, max = 64)
     @Pattern(regexp = "^\\w+$")

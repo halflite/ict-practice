@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
@@ -28,7 +27,6 @@ import com.example.todo.app.service.SigninService;
 @SessionAttributes(names="signinForm")
 public class SigninController {
 
-    
     private final SigninService signinService;
     private final MessageSource messageSource;
 
@@ -38,7 +36,7 @@ public class SigninController {
     }
 
     @RequestMapping(value = "/signin", method = RequestMethod.GET)
-    public String index(Model model) {
+    public String index() {
         return "signin";
     }
 
