@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.pac4j.core.credentials.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import com.example.todo.app.dao.AccountDao;
@@ -16,6 +17,7 @@ public class SigninService {
 
     private final AccountDao accountDao;
     private final PasswordEncoder passwordEncoder;
+    private final MessageSource messageSource;
 
     public Account authenticate(String username, String rawPassword) throws AuthenticateException {
         Optional<Account> accountOpt = accountDao.selectByUsername(username);
@@ -30,8 +32,9 @@ public class SigninService {
     }
     
     @Autowired
-    public SigninService(AccountDao accountDao, PasswordEncoder passwordEncoder) {
+    public SigninService(AccountDao accountDao, PasswordEncoder passwordEncoder, MessageSource messageSource) {
         this.accountDao = accountDao;
         this.passwordEncoder = passwordEncoder;
+        this.messageSource = messageSource;
     }
 }

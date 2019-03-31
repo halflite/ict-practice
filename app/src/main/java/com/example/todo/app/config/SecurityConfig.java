@@ -20,8 +20,8 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new SecurityInterceptor(config, "SigninClient"))
-                .addPathPatterns("/signin/post");
+//        registry.addInterceptor(new SecurityInterceptor(config, "SigninClient"))
+//                .addPathPatterns("/signin/post");
     }
 
     @Autowired

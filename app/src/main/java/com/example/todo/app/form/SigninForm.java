@@ -1,5 +1,7 @@
 package com.example.todo.app.form;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -11,14 +13,17 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author shingo
  *
  */
-public class SigninForm {
+public class SigninForm implements Serializable {
+    
+    private static final long serialVersionUID = 3028356361677547511L;
+
     @NotNull
     private String username;
 
     @NotNull
     private String password;
 
-	public String getUsername() {
+    public String getUsername() {
         return username;
     }
 
@@ -35,7 +40,7 @@ public class SigninForm {
     }
 
     @Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 }
