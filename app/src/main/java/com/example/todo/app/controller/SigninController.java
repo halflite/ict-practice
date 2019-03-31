@@ -53,7 +53,7 @@ public class SigninController {
             }
             Account account = signinService.authenticate(form.getUsername(), form.getPassword());
             String success = this.messageSource.getMessage("auth.success", null, Locale.JAPANESE);
-            attributes.addFlashAttribute("success", Collections.singletonList(success));
+            attributes.addFlashAttribute("success", success);
             sessionStatus.setComplete();
             return "redirect:/";
         } catch (AuthenticateException e) {

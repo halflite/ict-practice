@@ -32,14 +32,14 @@
     </div>
 
     <div class="bs-docs-section">
+      <th:block th:if="${! #lists.isEmpty(errors)}">
+        <div class="alert alert-dismissible alert-danger">
+          <ul th:each="error : ${errors}">
+            <li th:text="${error}"></li>
+          </ul>
+      	</div>
+      </th:block>
       <form th:action="@{/signin/post}" method="POST" class="form-signin">
-      	<div th:if="${! #lists.isEmpty(errors)}">
-      	  <div class="alert alert-dismissible alert-danger">
-            <ul th:each="error : ${errors}">
-              <li th:text="${error}"></li>
-            </ul>
-      	  </div>
-       	</div>
         <div class="form-label-group">
           <label for="inputUsername">ユーザーネーム</label>
           <input type="text" id="inputUsername" name="username" class="form-control" 
