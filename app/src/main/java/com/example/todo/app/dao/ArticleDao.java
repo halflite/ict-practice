@@ -5,14 +5,14 @@ import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
+import org.seasar.doma.boot.ConfigAutowireable;
 
-import com.example.todo.app.annotation.AutowiredDomaConfig;
 import com.example.todo.app.entity.Article;
 
 /**
  */
 @Dao
-@AutowiredDomaConfig
+@ConfigAutowireable
 public interface ArticleDao {
 
     /**
