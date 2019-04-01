@@ -3,8 +3,8 @@ package com.example.todo.app.service;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import org.pac4j.core.credentials.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.todo.app.dao.AccountDao;
@@ -23,10 +23,10 @@ public class SignupService {
         return accountOpt.isPresent();
     }
     
-    public Account register(String username, String password, String name) {
+    public Account register(String username, String password, String displayName) {
         LocalDateTime now = this.dateHelper.now();
         String hashedPassword = this.passwordEncoder.encode(password);
-        Account account = new Account(username, hashedPassword, name, now);
+        Account account = new Account(username, hashedPassword, displayName, now);
         accountDao.insert(account);
         
         return account;

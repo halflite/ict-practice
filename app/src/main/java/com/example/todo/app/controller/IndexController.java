@@ -1,6 +1,5 @@
 package com.example.todo.app.controller;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -8,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
@@ -19,10 +17,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.todo.app.entity.Account;
-import com.example.todo.app.exception.AuthenticateException;
 import com.example.todo.app.form.ArticleForm;
-import com.example.todo.app.form.SigninForm;
 
 @Controller
 @SessionAttributes(names = "articleForm")
