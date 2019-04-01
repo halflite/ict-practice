@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.example.todo.app.service.AccountService;
 
@@ -36,8 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/?logout")
+                .logoutRequestMatcher(new AntPathRequestMatcher("/signout"))
+                .logoutSuccessUrl("/?signout")
                 .permitAll();
     }
 
