@@ -15,13 +15,17 @@ public class AccountDetails implements UserDetails {
 
     private static final long serialVersionUID = 1596804545773727507L;
     
+    private final Long id;
     private final String username;
     private final String hashedPassword;
+    private final String displayName;
     private final AccountStatusType status;
     
     public AccountDetails(Account account) {
+        this.id = account.getId();
         this.username = account.getUsername();
         this.hashedPassword = account.getHashedPassword();
+        this.displayName = account.getDisplayName();
         this.status = account.getStatus();
     }
 
@@ -59,6 +63,14 @@ public class AccountDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.status.isLoginable();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 
     @Override
