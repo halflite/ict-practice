@@ -7,7 +7,9 @@ public enum ArticleStatusType {
 	/** 進行中 */
 	OPENED,
 	/** 完了 */
-	COMPLETED;
+	COMPLETED,
+	/** 削除 */
+	DELETED;
 	
     public String getValue() {
         return this.name().toUpperCase();

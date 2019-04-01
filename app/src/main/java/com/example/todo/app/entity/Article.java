@@ -11,6 +11,8 @@ import org.seasar.doma.GenerationType;
 import org.seasar.doma.Id;
 import org.seasar.doma.Table;
 
+import com.example.todo.app.type.ArticleStatusType;
+
 /**
  * 記事
  */
@@ -38,7 +40,7 @@ public class Article {
 
     /** 状態 */
     @Column(name = "status")
-    String status;
+    ArticleStatusType status;
 
     /** 更新日時 */
     @Column(name = "modified")
@@ -47,6 +49,18 @@ public class Article {
     /** 登録日時 */
     @Column(name = "created")
     LocalDateTime created;
+
+    public Article() {
+    }
+
+    public Article(Long accountId, String name, String description, LocalDateTime now) {
+        this.accountId = accountId;
+        this.name = name;
+        this.description = description;
+        this.status = ArticleStatusType.OPENED;
+        this.modified = now;
+        this.created = now;
+    }
 
     /** 
      * Returns the id.
@@ -125,7 +139,7 @@ public class Article {
      * 
      * @return the status
      */
-    public String getStatus() {
+    public ArticleStatusType getStatus() {
         return status;
     }
 
@@ -134,7 +148,7 @@ public class Article {
      * 
      * @param status the status
      */
-    public void setStatus(String status) {
+    public void setStatus(ArticleStatusType status) {
         this.status = status;
     }
 
