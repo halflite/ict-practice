@@ -150,13 +150,14 @@
       $('#inputUpdateId, #inputCompleteId').val(id);
       $.ajax({
         url: '/article/' + id,
-        type: 'GET'
+        type: 'GET',
+        timeout: 10000
       }).done(function (data) {
-        $('#inputUpdateName').val(data.name);
-        $('#inputUpdateDescription').val(data.description);
         $('#create_form').hide();
         $('#update_form').show();
         $('h1').text('更新');
+        $('#inputUpdateDescription').val(data.description);
+        $('#inputUpdateName').val(data.name).focus();
       })
     });
 
