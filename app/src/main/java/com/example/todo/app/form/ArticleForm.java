@@ -18,6 +18,8 @@ public class ArticleForm implements Serializable {
 
     private static final long serialVersionUID = -6021251837834391695L;
 
+    private Long id;
+    
     /** 記事名 */
     @NotNull(message = "{text.input.require}")
     @Size(max = 64, message = "{text.size.max.message}")
@@ -27,6 +29,14 @@ public class ArticleForm implements Serializable {
     @NotNull
     @Size(max = 255)
     private String description;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

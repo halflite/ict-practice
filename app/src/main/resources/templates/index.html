@@ -14,6 +14,7 @@
   <!-- Bootstrap core CSS -->
   <link href="webjars/bootswatch-sandstone/4.2.1/bootstrap.min.css" rel="stylesheet">
   <link href="webjars/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script type="text/javascript" src="webjars/jquery/3.3.1/jquery.min.js"></script>
 
 </head>
 
@@ -42,7 +43,7 @@
     <div class="page-header">
       <div class="row">
         <div class="col-lg-4 col-md-8 col-sm-8">
-          <h1>ToDo新規作成</h1>
+          <h1>新規作成</h1>
         </div>
       </div>
     </div>
@@ -62,7 +63,7 @@
           </ul>
         </div>
       </th:block>
-      <form th:action="@{/create}" method="POST">
+      <form th:action="@{/create}" method="POST" id="create_form">
         <div class="form-row">
           <div class="form-group col-md-2">
             <input type="text" id="inputName" name="name" class="form-control-plaintext" placeholder="ToDoを入力"
@@ -74,10 +75,37 @@
           </div>
           <div class="form-group col-md-2">
             <button type="submit" class="btn btn-primary mb-2">
-              <i class="fa fa-check-square-o" aria-hidden="true"></i> 登録
+              <i class="fa fa-check-square-o" aria-hidden="true"></i> 新規登録
             </button>
           </div>
         </div>
+      </form>
+      <form th:action="@{/update}" method="POST" id="update_form">
+        <div class="form-row">
+          <div class="form-group col-md-2">
+            <input type="text" id="inputUpdateName" name="name" class="form-control-plaintext" placeholder="ToDoを入力"
+              th:value="${articleForm.name}" required autofocus>
+          </div>
+          <div class="form-group col-md-8">
+            <input type="text" id="inputUpdateDescription" name="description" class="form-control-plaintext"
+              placeholder="概要を入力" th:value="${articleForm.description}" required>
+          </div>
+          <div class="form-group col-md-2">
+            <input type="hidden" name="id" id="inputUpdateId">
+            <button type="submit" class="btn btn-primary mb-2"　id="update_submit">
+              <i class="fa fa-check-square-o" aria-hidden="true"></i> 更新
+            </button>
+            <button type="submit" class="btn btn-warning mb-2" id="complete_submit">
+              <i class="fa fa-exclamation-circle" aria-hidden="true"></i> 完了
+            </button>
+          </div>
+        </div>
+      </form>
+      <form th:action="@{/complete}" method="POST" id="complete_form">
+        <input type="hidden" name="id" id="inputCompleteId">
+      </form>
+      <form th:action="@{/delete}" method="POST" id="delete_form">
+        <input type="hidden" name="id" id="inputDeleteId">
       </form>
     </div>
     <div><hr></div>
@@ -95,10 +123,15 @@
                 <small th:text="${ article.created }"></small>
               </p>
             </div>
-            <div class="form-group col-md-2">
-              <button type="submit" class="btn btn-primary mb-2"
-                th:disabled="${#authentication.principal == 'anonymousUser' || #authentication.principal.id != article.accountId }">
-                <i class="fa fa-check-square-o" aria-hidden="true"></i></i> 修正
+            <div class="form-group col-md-2" th:with="completed=${ article.status.completed }">
+              <button type="submit" class="btn mb-2"
+                th:classappend="${completed} ? 'btn-danger' : 'btn-secondary'"
+                th:data-article-id="${ article.id }"
+                th:data-article-status="${ article.status }"
+                th:disabled="${#authentication.principal.equals('anonymousUser') || #authentication.principal.id != article.accountId }">
+                <i class="fa" aria-hidden="true"
+                  th:classappend="${completed} ? 'fa-times-circle' : 'fa-check-square-o'"></i> 
+                <th:block th:text="${completed} ? '削除': '更新'"></th:block>
               </button>
             </div>
           </div>
@@ -107,6 +140,39 @@
     </div>
 
   </main><!-- /.container -->
+
+<script type="text/javascript">
+  $(function () {
+    $('#update_form, #complete_form, #delete_form').hide();
+
+    $('button:submit[data-article-status="OPENED"]').on('click', function (e) {
+      var id = $(this).data('article-id');
+      $('#inputUpdateId, #inputCompleteId').val(id);
+      $.ajax({
+        url: '/article/' + id,
+        type: 'GET'
+      }).done(function (data) {
+        $('#inputUpdateName').val(data.name);
+        $('#inputUpdateDescription').val(data.description);
+        $('#create_form').hide();
+        $('#update_form').show();
+        $('h1').text('更新');
+      })
+    });
+
+    $('button:submit[data-article-status="COMPLETED"]').on('click', function (e) {
+        var id = $(this).data('article-id');
+        $('#inputDeleteId').val(id);
+        $('#delete_form').submit();
+        return false;
+    });
+    
+    $('#complete_submit').on('click', function (e) {
+    	$('#complete_form').submit();
+    	return false;
+    });
+  });
+</script>
 
 </body>
 

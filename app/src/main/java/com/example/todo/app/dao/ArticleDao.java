@@ -25,7 +25,7 @@ public interface ArticleDao {
      * @return the Article entity
      */
     @Select
-    Article selectById(Long id);
+    Optional<Article> selectById(Long id);
 
     /**
      * 記事をID/作成アカウントID、状態で検索します

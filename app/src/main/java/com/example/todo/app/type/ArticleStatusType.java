@@ -14,4 +14,8 @@ public enum ArticleStatusType {
     public String getValue() {
         return this.name().toUpperCase();
     }
+    
+    public boolean isCompleted() {
+        return this == COMPLETED;
+    }
 }

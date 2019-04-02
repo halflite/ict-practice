@@ -10,5 +10,7 @@ select
 from
   article
 inner join account on account.id = article.account_id
+where
+  article.status <> 'DELETED'
 order by
   article.created desc
