@@ -60,14 +60,14 @@
           <label for="inputUsername">ユーザーネーム</label>
           <span class="badge badge-warning">必須</span>
           <input type="text" id="inputUsername" name="username" class="form-control" 
-            placeholder="ユーザーネーム" th:value="${signupForm.username}" required autofocus>
+            placeholder="ユーザーネーム" th:value="${signupForm.username}" maxlength="64" required autofocus>
           <small class="form-text text-muted">ログイン用ユーザーネーム。 半角英数字、4文字以上、64文字以下</small>
         </div>
         
         <div class="form-label-group">
           <label for="inputDisplayName">表示名</label>
           <input type="text" id="inputDisplayName" name="displayName" class="form-control" 
-            placeholder="表示名" th:value="${signupForm.displayName}">
+            placeholder="表示名" th:value="${signupForm.displayName}" maxlength="32">
           <small class="form-text text-muted">32文字以下(任意)</small>
         </div>
 
@@ -75,7 +75,7 @@
           <label for="inputPassword">パスワード</label>
           <span class="badge badge-warning">必須</span>
           <input type="password" id="inputPassword" name="password" class="form-control" 
-            placeholder="パスワード" th:value="${signupForm.password}" required>
+            placeholder="パスワード" th:value="${signupForm.password}" maxlength="72" required>
           <small class="form-text text-muted">4文字以上、72文字以下</small>
         </div>
 
@@ -83,7 +83,7 @@
           <label for="inputConfirmPassword">パスワード(確認)</label>
           <span class="badge badge-warning">必須</span>
           <input type="password" id="inputConfirmPassword" name="confirmPassword" class="form-control" 
-            placeholder="パスワード(確認)" th:value="${signupForm.confirmPassword}" required>
+            placeholder="パスワード(確認)" th:value="${signupForm.confirmPassword}" maxlength="72" required>
           <small class="form-text text-muted">確認のため再入力して下さい</small>
         </div>
         
