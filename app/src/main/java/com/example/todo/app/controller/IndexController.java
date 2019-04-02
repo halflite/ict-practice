@@ -2,14 +2,13 @@ package com.example.todo.app.controller;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.todo.app.auth.AccountDetails;
 import com.example.todo.app.entity.Article;
+import com.example.todo.app.entity.DisplayArticle;
 import com.example.todo.app.form.ArticleForm;
 import com.example.todo.app.service.ArticleService;
 
@@ -36,7 +36,9 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index() {
+    public String index(Model model) {
+        List<DisplayArticle> articles = this.articleService.findAll();
+        model.addAttribute("articles", articles);
         return "index";
     }
 
@@ -44,11 +46,6 @@ public class IndexController {
     public String post(@Validated ArticleForm form, BindingResult result, RedirectAttributes attributes,
             SessionStatus sessionStatus, @AuthenticationPrincipal AccountDetails accountDetails) {
         if (result.hasErrors()) {
-            List<String> errors = result.getAllErrors()
-                    .stream()
-                    .map(ObjectError::toString)
-                    .collect(Collectors.toList());
-            attributes.addFlashAttribute("errors", errors);
             return "redirect:/";
         }
 

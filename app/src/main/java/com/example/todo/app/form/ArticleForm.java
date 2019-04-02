@@ -19,10 +19,10 @@ public class ArticleForm implements Serializable {
     private static final long serialVersionUID = -6021251837834391695L;
 
     /** 記事名 */
-    @NotNull
-    @Size(max = 64)
+    @NotNull(message = "{text.input.require}")
+    @Size(max = 64, message = "{text.size.max.message}")
     private String name;
-    
+
     /** 概要 */
     @NotNull
     @Size(max = 255)

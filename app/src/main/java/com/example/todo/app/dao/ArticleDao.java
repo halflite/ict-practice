@@ -1,5 +1,6 @@
 package com.example.todo.app.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.seasar.doma.Dao;
@@ -10,6 +11,7 @@ import org.seasar.doma.Update;
 import org.seasar.doma.boot.ConfigAutowireable;
 
 import com.example.todo.app.entity.Article;
+import com.example.todo.app.entity.DisplayArticle;
 import com.example.todo.app.type.ArticleStatusType;
 
 /**
@@ -26,7 +28,7 @@ public interface ArticleDao {
     Article selectById(Long id);
 
     /**
-     * 有効な状態の記事を、ID/作成アカウントIDで検索します
+     * 記事をID/作成アカウントID、状態で検索します
      * 
      * @param id
      * @param accountId
@@ -34,6 +36,9 @@ public interface ArticleDao {
      */
     @Select
     Optional<Article> selectByIdAndAccountIdAndStatus(Long id, Long accountId, ArticleStatusType status);
+    
+    @Select
+    List<DisplayArticle> selectWithAccountOrderByCreated();
     
     /**
      * @param entity

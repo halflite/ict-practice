@@ -1,6 +1,7 @@
 package com.example.todo.app.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.seasar.doma.jdbc.Config;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.todo.app.dao.ArticleDao;
 import com.example.todo.app.entity.Article;
+import com.example.todo.app.entity.DisplayArticle;
 import com.example.todo.app.exception.NotFoundAtricleException;
 import com.example.todo.app.helper.DateHelper;
 import com.example.todo.app.type.ArticleStatusType;
@@ -19,6 +21,10 @@ public class ArticleService {
     private final ArticleDao articleDao;
     private final DateHelper dateHelper;
 
+    public List<DisplayArticle> findAll() {
+        return this.articleDao.selectWithAccountOrderByCreated();
+    }
+    
     /** 
      * 記事作成
      * 
