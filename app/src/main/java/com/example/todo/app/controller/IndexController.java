@@ -19,12 +19,15 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.todo.app.auth.AccountDetails;
+import com.example.todo.app.entity.Article;
 import com.example.todo.app.form.ArticleForm;
+import com.example.todo.app.service.ArticleService;
 
 @Controller
 @SessionAttributes(names = "articleForm")
 public class IndexController {
 
+    private final ArticleService articleService;
     private final MessageSource messageSource;
 
     @ModelAttribute
@@ -38,7 +41,7 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String post(@Validated ArticleForm form, BindingResult result, RedirectAttributes attributes, 
+    public String post(@Validated ArticleForm form, BindingResult result, RedirectAttributes attributes,
             SessionStatus sessionStatus, @AuthenticationPrincipal AccountDetails accountDetails) {
         if (result.hasErrors()) {
             List<String> errors = result.getAllErrors()
@@ -48,16 +51,17 @@ public class IndexController {
             attributes.addFlashAttribute("errors", errors);
             return "redirect:/";
         }
-        
-        // TODO ロジック
-        String success = this.messageSource.getMessage("create.success", null, Locale.JAPANESE);
+
+        Article article = this.articleService.create(accountDetails.getId(), form.getName(), form.getDescription());
+        String success = this.messageSource.getMessage("create.success", new Object[] { article.getName() }, Locale.JAPANESE);
         attributes.addFlashAttribute("success", success);
         sessionStatus.setComplete();
         return "redirect:/";
     }
 
     @Autowired
-    public IndexController(MessageSource messageSource) {
+    public IndexController(ArticleService articleService, MessageSource messageSource) {
+        this.articleService = articleService;
         this.messageSource = messageSource;
     }
 }

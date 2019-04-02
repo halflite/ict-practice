@@ -25,17 +25,17 @@ public class ArticleService {
      * @param accountId
      * @param name
      * @param description
-     * @return　作成した記事ID
+     * @return　作成した記事
      */
-    public Long create(Long accountId, String name, String description) {
+    public Article create(Long accountId, String name, String description) {
         LocalDateTime now = this.dateHelper.now();
         Article article = new Article(accountId, name, description, now);
         this.articleDao.insert(article);
-        return article.getId();
+        return article;
     }
 
-    public void update(Long id, Long accountId, String name, String description) throws NotFoundAtricleException {
-        this.config.getTransactionManager().required(() -> {
+    public Article update(Long id, Long accountId, String name, String description) throws NotFoundAtricleException {
+        return this.config.getTransactionManager().required(() -> {
             Article article = this.articleDao.selectByIdAndAccountIdAndStatus(id, accountId, ArticleStatusType.OPENED)
                     .orElseThrow(NotFoundAtricleException::new);
             article.setName(name);
@@ -43,26 +43,38 @@ public class ArticleService {
             LocalDateTime now = this.dateHelper.now();
             article.setModified(now);
             this.articleDao.update(article);
+            return article;
         });
     }
 
-    public void complete(Long id, Long accountId) throws NotFoundAtricleException {
-        this.changeStatus(id, accountId, ArticleStatusType.OPENED, ArticleStatusType.COMPLETED);
+    public Article complete(Long id, Long accountId) throws NotFoundAtricleException {
+        return this.changeStatus(id, accountId, ArticleStatusType.OPENED, ArticleStatusType.COMPLETED);
     }
 
-    public void delete(Long id, Long accountId) throws NotFoundAtricleException {
-        this.changeStatus(id, accountId, ArticleStatusType.COMPLETED, ArticleStatusType.DELETED);
+    public Article delete(Long id, Long accountId) throws NotFoundAtricleException {
+        return  this.changeStatus(id, accountId, ArticleStatusType.COMPLETED, ArticleStatusType.DELETED);
     }
 
-    protected void changeStatus(Long id, Long accountId, ArticleStatusType from, ArticleStatusType to)
+    /** 
+     * 状態を変更します
+     * 
+     * @param id　記事ID
+     * @param accountId 作成者アカウントID
+     * @param from 変更前状態
+     * @param to　変更後状態
+     * @return 更新した記事
+     * @throws NotFoundAtricleException
+     */
+    protected Article changeStatus(Long id, Long accountId, ArticleStatusType from, ArticleStatusType to)
             throws NotFoundAtricleException {
-        this.config.getTransactionManager().required(() -> {
+        return this.config.getTransactionManager().required(() -> {
             Article article = this.articleDao.selectByIdAndAccountIdAndStatus(id, accountId, from)
                     .orElseThrow(NotFoundAtricleException::new);
             LocalDateTime now = this.dateHelper.now();
             article.setModified(now);
             article.setStatus(to);
             this.articleDao.update(article);
+            return article;
         });
     }
 
