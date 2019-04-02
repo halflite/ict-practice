@@ -155,7 +155,7 @@
 				<executions>
 					<execution>
 						<id>doma-gen</id>
-						<phase>generate-resources</phase>
+						<phase>test</phase>
 						<configuration>
 							<target name="gen">
 								<taskdef name="gen"
